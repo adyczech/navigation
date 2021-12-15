@@ -114,7 +114,7 @@ namespace voxel_grid {
     raytraceLine(mv, x0, y0, z0, x1, y1, z1, max_length);
   }
 
-  void VoxelGrid::clearVoxelLine(double x0, double y0, double z0, double x1, double y1, double z1, unsigned int max_length){
+  void VoxelGrid::clearVoxelLine(double x0, double y0, double z0, double x1, double y1, double z1, unsigned int max_length, unsigned int min_length){
     if(x0 >= size_x_ || y0 >= size_y_ || z0 >= size_z_ || x1>=size_x_ || y1>=size_y_ || z1>=size_z_){
       ROS_DEBUG("Error, line endpoint out of bounds. (%.2f, %.2f, %.2f) to (%.2f, %.2f, %.2f),  size: (%d, %d, %d)", x0, y0, z0, x1, y1, z1, 
           size_x_, size_y_, size_z_);
@@ -122,14 +122,15 @@ namespace voxel_grid {
     }
 
     ClearVoxel cv(data_);
-    raytraceLine(cv, x0, y0, z0, x1, y1, z1, max_length);
+    raytraceLine(cv, x0, y0, z0, x1, y1, z1, max_length, min_length);
   }
 
   void VoxelGrid::clearVoxelLineInMap(double x0, double y0, double z0, double x1, double y1, double z1, unsigned char *map_2d, 
-      unsigned int unknown_threshold, unsigned int mark_threshold, unsigned char free_cost, unsigned char unknown_cost, unsigned int max_length){
+      unsigned int unknown_threshold, unsigned int mark_threshold, unsigned char free_cost, unsigned char unknown_cost, unsigned int max_length
+      , unsigned int min_length){
     costmap = map_2d;
     if(map_2d == NULL){
-      clearVoxelLine(x0, y0, z0, x1, y1, z1, max_length);
+      clearVoxelLine(x0, y0, z0, x1, y1, z1, max_length, min_length);
       return;
     }
 
@@ -140,7 +141,7 @@ namespace voxel_grid {
     }
 
     ClearVoxelInMap cvm(data_, costmap, unknown_threshold, mark_threshold, free_cost, unknown_cost);
-    raytraceLine(cvm, x0, y0, z0, x1, y1, z1, max_length);
+    raytraceLine(cvm, x0, y0, z0, x1, y1, z1, max_length, min_length);
   }
 
   VoxelStatus VoxelGrid::getVoxel(unsigned int x, unsigned int y, unsigned int z)

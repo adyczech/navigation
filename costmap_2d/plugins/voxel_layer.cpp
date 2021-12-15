@@ -360,13 +360,15 @@ void VoxelLayer::raytraceFreespace(const Observation& clearing_observation, doub
     if (worldToMap3DFloat(wpx, wpy, wpz, point_x, point_y, point_z))
     {
       unsigned int cell_raytrace_range = cellDistance(clearing_observation.raytrace_range_);
+      unsigned int cell_raytrace_min_range = cellDistance(clearing_observation.raytrace_min_range_);
 
       // voxel_grid_.markVoxelLine(sensor_x, sensor_y, sensor_z, point_x, point_y, point_z);
       voxel_grid_.clearVoxelLineInMap(sensor_x, sensor_y, sensor_z, point_x, point_y, point_z, costmap_,
                                       unknown_threshold_, mark_threshold_, FREE_SPACE, NO_INFORMATION,
-                                      cell_raytrace_range);
+                                      cell_raytrace_range, cell_raytrace_min_range);
 
-      updateRaytraceBounds(ox, oy, wpx, wpy, clearing_observation.raytrace_range_, min_x, min_y, max_x, max_y);
+      updateRaytraceBounds(ox, oy, wpx, wpy, clearing_observation.raytrace_range_,
+        clearing_observation.raytrace_min_range_, min_x, min_y, max_x, max_y);
 
       if (publish_clearing_points)
       {
