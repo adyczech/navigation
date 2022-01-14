@@ -415,6 +415,10 @@ private:
         error_b += abs_db;
         if ((unsigned int)error_b >= abs_da)
         {
+          // Modiefied Bresenham 
+          at(offset);
+          at(offset + offset_b - offset_a);
+
           offset += offset_b;
           error_b -= abs_da;
         }
